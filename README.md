@@ -1,4 +1,5 @@
-Solstice Check-In Service — Check-In Prototype
+Solstice Check-In Service — Check-In Prototype  
+[Click here to open the live Solstice Check-In Service] https://solstice-checkin-service.onrender.com
 
 This prototype demonstrates a simple check-in process where badge printing is completed before an attendee is fully checked in.
 
