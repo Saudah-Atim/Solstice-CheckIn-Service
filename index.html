@@ -1,20 +1,150 @@
-function addLog(message) {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solstice Check-In Service</title>
 
-    const log = document.getElementById("log");
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 20px;
+        }
 
-    const entry = document.createElement("p");
+        h1 {
+            text-align: center;
+        }
 
-    entry.textContent =
-        new Date().toLocaleTimeString() +
-        " — " +
-        message;
+        input, button {
+            padding: 10px;
+            margin: 5px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
 
-    log.prepend(entry);
-}
+        button {
+            cursor: pointer;
+        }
 
-displayAttendees();
+        .card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
 
-</script>
+        #log p {
+            border-bottom: 1px solid #eee;
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Solstice Check-In Service</h1>
+
+    <div class="card">
+        <h2>Attendee Check-In</h2>
+
+        <input
+            type="text"
+            id="attendeeId"
+            placeholder="Enter attendee ID"
+        >
+
+        <input
+            type="text"
+            id="attendeeName"
+            placeholder="Enter attendee name"
+        >
+
+        <button onclick="checkIn()">
+            Check In
+        </button>
+    </div>
+
+    <div class="card">
+        <h2>Attendees</h2>
+        <div id="attendees"></div>
+    </div>
+
+    <div class="card">
+        <h2>Activity Log</h2>
+        <div id="log"></div>
+    </div>
+
+    <script>
+        const checkedInAttendees = [];
+        const pendingAttendees = [];
+
+        function checkIn() {
+            const id = document.getElementById("attendeeId").value.trim();
+            const name = document.getElementById("attendeeName").value.trim();
+
+            if (!id || !name) {
+                addLog("Please enter an attendee ID and name.");
+                return;
+            }
+
+            const alreadyCheckedIn =
+                checkedInAttendees.some(attendee => attendee.id === id);
+
+            if (alreadyCheckedIn) {
+                addLog(name + " is already checked in.");
+                return;
+            }
+
+            checkedInAttendees.push({
+                id: id,
+                name: name
+            });
+
+            addLog(name + " checked in successfully.");
+
+            document.getElementById("attendeeId").value = "";
+            document.getElementById("attendeeName").value = "";
+
+            displayAttendees();
+        }
+
+        function displayAttendees() {
+            const container = document.getElementById("attendees");
+
+            container.innerHTML = "";
+
+            if (checkedInAttendees.length === 0) {
+                container.innerHTML = "<p>No attendees checked in yet.</p>";
+                return;
+            }
+
+            checkedInAttendees.forEach(attendee => {
+                const entry = document.createElement("p");
+
+                entry.textContent =
+                    "✅ " + attendee.name + " (" + attendee.id + ")";
+
+                container.appendChild(entry);
+            });
+        }
+
+        function addLog(message) {
+            const log = document.getElementById("log");
+
+            const entry = document.createElement("p");
+
+            entry.textContent =
+                new Date().toLocaleTimeString() +
+                " — " +
+                message;
+
+            log.prepend(entry);
+        }
+
+        displayAttendees();
+    </script>
 
 </body>
 </html>
